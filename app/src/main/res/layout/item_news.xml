@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/id_news_imageview"
+        android:layout_width="60dp"
+        android:layout_height="80dp"
+        android:padding="5dp"
+        android:src="@drawable/wife" />
+
+    <TextView
+        android:id="@+id/id_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/id_news_imageview"
+        android:lines="1"
+        android:padding="4dp"
+        android:text="标题"
+        android:textColor="#000000"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/id_des"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/id_title"
+        android:layout_toRightOf="@+id/id_news_imageview"
+        android:lines="2"
+        android:padding="4dp"
+        android:text="描述"
+        android:textSize="12sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#000000" />
+
+</RelativeLayout>
