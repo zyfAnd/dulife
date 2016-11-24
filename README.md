@@ -1,1 +1,22 @@
 # dulife
+一个关于扯犊子生活的app,生活需要扯一扯,你值得拥有!
+##侧滑栏
+![](images/00.png)
+##头条 
+![本地图片](images/0.png)
+##NBA
+![本地图片](images/2.png)
+##汽车
+![本地图片](images/3.png)
+##笑话
+![](images/1.png)
+##图片
+![](images/5.png)
+##关于
+![](images/6.png)
+##设置
+![](images/7.png)
+##登录界面
+![](images/8.png)
+##注册界面
+![](images/9.png)
