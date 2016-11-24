@@ -20,3 +20,5 @@
 ![](images/8.png)
 ##注册界面
 ![](images/9.png)
+##动图
+![](images/GIF.gif)
