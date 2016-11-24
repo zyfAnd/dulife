@@ -24,17 +24,20 @@ public class ImagePresenterImpl implements ImagePresenter, ImageModelImpl.OnLoad
 
     @Override
     public void loadImageList() {
-        Log.e("ImagePresenterImpl","loadImageList");
+        imageView.showLoadFailMsg();
+        Log.e("ImagePresenterImpl", "loadImageList");
         mImageModel.loadImageList(this);
     }
 
     @Override
     public void onSuccess(List<ImageBean> list) {
         imageView.addImages(list);
+        imageView.hideProgress();
     }
 
     @Override
     public void onFailure(String msg, Exception e) {
-
+        imageView.hideProgress();
+        imageView.showLoadFailMsg();
     }
 }

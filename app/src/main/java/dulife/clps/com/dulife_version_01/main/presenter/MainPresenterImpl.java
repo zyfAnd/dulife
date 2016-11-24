@@ -27,6 +27,10 @@ public class MainPresenterImpl implements MainPresenter {
             case R.id.nav_about:
                 mMainView.switchAbout();
                 break;
+            case R.id.nav_setting:
+                mMainView.switchSetting();
+                break;
+
         }
 
     }

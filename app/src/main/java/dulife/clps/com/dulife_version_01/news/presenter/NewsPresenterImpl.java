@@ -55,6 +55,7 @@ public class NewsPresenterImpl implements NewsPresenter, NewsModelImpl.OnLoadNew
     public void onSuccess(List<NewsBean> list) {
         Log.e("NewsPresenter-onSuccess","--"+list.size());
         mNewsView.addNews(list);
+        mNewsView.hideProgress();
     }
 
     @Override

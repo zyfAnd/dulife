@@ -8,4 +8,5 @@ public interface MainView {
     void switchNews();
     void switchImage();
     void switchAbout();
+    void switchSetting();
 }

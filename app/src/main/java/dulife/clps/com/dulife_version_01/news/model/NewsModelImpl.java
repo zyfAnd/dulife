@@ -1,11 +1,8 @@
 package dulife.clps.com.dulife_version_01.news.model;
 
 import android.util.Log;
-
 import com.squareup.okhttp.Request;
-
 import java.util.List;
-
 import dulife.clps.com.dulife_version_01.bean.NewsBean;
 import dulife.clps.com.dulife_version_01.bean.NewsDetailBean;
 import dulife.clps.com.dulife_version_01.commons.Urls;
@@ -40,8 +37,22 @@ public class NewsModelImpl implements NewsModel {
     }
 
     @Override
-    public void loadNewsDetail(String url, OnLoadNewsDetailListener listener) {
+    public void loadNewsDetail(final String docid, final OnLoadNewsDetailListener listener) {
 
+        String url = getDetailUrl(docid);
+        OkHttpUtil.ResultCallback<String> loadNewsCallback = new OkHttpUtil.ResultCallback<String>() {
+            @Override
+            public void onError(Request request, Exception e) {
+
+            }
+
+            @Override
+            public void onSuccess(String response) {
+               NewsDetailBean bean =  NewsJsonUtil.readJsonNewsDetailBean(response,docid);
+                listener.onSuccess(bean);
+            }
+        };
+        new OkHttpUtil()._getAsyn(url,loadNewsCallback);
     }
 
     public interface OnLoadNewsListListener {
@@ -76,5 +87,11 @@ public class NewsModelImpl implements NewsModel {
         }
         return id;
 
+    }
+    public String getDetailUrl(String docid)
+    {
+        StringBuffer buffer = new StringBuffer(Urls.NEW_DETAIL);
+        buffer.append(docid).append(Urls.END_DETAIL_URL);
+        return buffer.toString();
     }
 }

@@ -1,56 +1,82 @@
 package dulife.clps.com.dulife_version_01.news.widget;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.Toolbar;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+
+import org.sufficientlysecure.htmltextview.HtmlTextView;
 
 import dulife.clps.com.dulife_version_01.R;
 import dulife.clps.com.dulife_version_01.bean.NewsBean;
-import dulife.clps.com.dulife_version_01.commons.Urls;
 import dulife.clps.com.dulife_version_01.image.ImageJsonUtil;
+import dulife.clps.com.dulife_version_01.news.presenter.NewsDetailPresenter;
+import dulife.clps.com.dulife_version_01.news.presenter.NewsDetailPresenterImpl;
+import dulife.clps.com.dulife_version_01.news.view.NewsDetailView;
+import dulife.clps.com.dulife_version_01.util.ToolUtil;
+import me.imid.swipebacklayout.lib.SwipeBackLayout;
+import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
-public class NewsDetailActivity extends AppCompatActivity {
+public class NewsDetailActivity extends SwipeBackActivity implements NewsDetailView {
 
     private Toolbar mToolbar;
-    private WebView view;
-    private ImageView imageView;
+    private ImageView mImageView;
+    private HtmlTextView htmlTextView;
+    private CollapsingToolbarLayout mCollapsingToolbarLayout;
+    private NewsDetailPresenter mNewsDetailPresenter;
+    private ProgressBar mProgressBar;
+    private SwipeBackLayout mSwipeBackLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_detail);
-        NewsBean detail = (NewsBean) getIntent().getSerializableExtra("NewsBean");
-        StringBuffer buffer = new StringBuffer(Urls.NEW_DETAIL);
-        buffer.append(detail.getDocid());
-        String url = buffer.toString() + Urls.END_DETAIL_URL;
+        NewsBean bean = (NewsBean) getIntent().getSerializableExtra("NewsBean");
+
+        mSwipeBackLayout = getSwipeBackLayout();
+        mSwipeBackLayout.setEdgeSize(ToolUtil.getWidthInPx(this));
+        mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
 
         initViews();
 
-        view.setWebViewClient(new WebViewClient() {
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return super.shouldOverrideUrlLoading(view, url);
+            public void onClick(View view) {
+                onBackPressed();
             }
         });
-        view.loadUrl(url);
-        ImageJsonUtil.display(this, imageView, detail.getImgsrc());
-//        mToolbar.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                onBackPressed();
-//            }
-//        });
+
+        ImageJsonUtil.display(getBaseContext(), mImageView, bean.getImgsrc());
+        mCollapsingToolbarLayout.setTitle(bean.getTitle());
+        mNewsDetailPresenter = new NewsDetailPresenterImpl(getApplication(), this);
+        mNewsDetailPresenter.loadNewsDetail(bean.getDocid());
+
     }
 
     public void initViews() {
-//        mToolbar = (Toolbar) findViewById(R.id.appbar);
-        view = (WebView) findViewById(R.id.id_web_detail);
-        imageView = (ImageView) findViewById(R.id.id_detailnews_image);
+        mProgressBar = (ProgressBar) findViewById(R.id.progress);
+        mImageView = (ImageView) findViewById(R.id.ivImage);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        htmlTextView = (HtmlTextView) findViewById(R.id.htmlTextView);
+        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
     }
 
+    @Override
+    public void showNewsDetailContent(String newsDetailContent) {
+        htmlTextView.setHtmlFromString(newsDetailContent, new HtmlTextView.LocalImageGetter());
+    }
 
+    @Override
+    public void showProgress() {
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgress() {
+        mProgressBar.setVisibility(View.GONE);
+    }
 }

@@ -7,12 +7,13 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 
 import dulife.clps.com.dulife_version_01.R;
 import dulife.clps.com.dulife_version_01.about.AboutFragment;
@@ -21,13 +22,16 @@ import dulife.clps.com.dulife_version_01.main.presenter.MainPresenter;
 import dulife.clps.com.dulife_version_01.main.presenter.MainPresenterImpl;
 import dulife.clps.com.dulife_version_01.main.view.MainView;
 import dulife.clps.com.dulife_version_01.news.widget.NewsFragment;
+import dulife.clps.com.dulife_version_01.setting.SettingFragment;
 
 public class MainActivity extends AppCompatActivity implements MainView {
 
     private MainPresenter mainPresenter;
+
     private ActionBarDrawerToggle toggle;
     private DrawerLayout drawer;
     private Toolbar toolbar;
+    private TextView tvUserName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,13 @@ public class MainActivity extends AppCompatActivity implements MainView {
                         .setAction("Action", null).show();
             }
         });
+
+        tvUserName = (TextView) findViewById(R.id.tvUserName);
+        String name = getIntent().getStringExtra("name");
+
+        if (name!=null){
+            tvUserName.setText(name);
+        }
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
@@ -115,5 +126,12 @@ public class MainActivity extends AppCompatActivity implements MainView {
         getSupportFragmentManager().
                 beginTransaction().replace(R.id.frame_content, new AboutFragment()).commit();
         toolbar.setTitle("关于");
+    }
+
+    @Override
+    public void switchSetting() {
+        getSupportFragmentManager().
+                beginTransaction().replace(R.id.frame_content, new SettingFragment()).commit();
+        toolbar.setTitle("设置");
     }
 }
